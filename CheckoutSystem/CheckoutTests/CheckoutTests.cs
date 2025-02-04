@@ -233,5 +233,32 @@ namespace Implementations.Tests
             Assert.AreEqual(itemA, scannedItems.First().Item);
             Assert.AreEqual(2, scannedItems.First().Quantity);
         }
+
+        [TestMethod]
+        public void CalculateTotalPrice_PromotionAppliedToCorrectQuantity()
+        {
+            // Arrange
+            var promotionServiceMock = new Mock<IPromotionService>();
+            var itemServiceMock = new Mock<IItemService>();
+
+            var promotion = new Promotion { Name = "Promo1", AssociatedItemSKU = "A", Quantity = 3, Price = 130 };
+            promotionServiceMock.Setup(s => s.GetPromotionsForItem("A")).Returns(new List<Promotion> { promotion });
+
+            var itemA = new Item { SKU = "A", UnitPrice = 50 };
+            itemServiceMock.Setup(s => s.GetItem("A")).Returns(itemA);
+
+            var checkout = new Checkout(promotionServiceMock.Object, itemServiceMock.Object);
+
+            // Act
+            checkout.Scan("A");
+            checkout.Scan("A");
+            checkout.Scan("A");
+            checkout.Scan("A");
+
+            var totalPrice = checkout.CalculateTotalPrice();
+
+            // Assert
+            Assert.AreEqual(180, totalPrice); // Promotion price for 3 items + 2 normal prices for 2 items
+        }
     }
 }
