@@ -4,23 +4,30 @@ using Moq;
 using CheckoutSystem.Abstractions.Entities;
 using CheckoutSystem.Abstractions.Services;
 using System.Collections.Generic;
+using System.Linq;
 
 [TestClass]
 public class CheckoutTests
 {
     [TestMethod]
-    public void ScanItem_AddsItemToCheckout()
+    public void Scan_AddsItemToCheckout()
     {
         // Arrange
         var promotionServiceMock = new Mock<IPromotionService>();
-        var checkout = new Checkout(promotionServiceMock.Object);
-        var item = new Item { SKU = "A", UnitPrice = 50 };
+        var itemServiceMock = new Mock<IItemService>();
+        var checkout = new Checkout(promotionServiceMock.Object, itemServiceMock.Object);
+        var itemSKU = "A";
+        var itemDetails = new Item { SKU = "A", UnitPrice = 50 }; // Mock item details from item service
+
+        itemServiceMock.Setup(s => s.GetItem(It.IsAny<string>())).Returns(itemDetails);
 
         // Act
-        checkout.ScanItem(item);
-        decimal totalPrice = checkout.CalculateTotalPrice();
+        checkout.Scan(itemSKU);
 
         // Assert
-        Assert.AreEqual(item.UnitPrice, totalPrice);
+        var scannedItems = checkout.GetCheckoutItems();
+        Assert.AreEqual(1, scannedItems.Count());
+        Assert.AreEqual(itemDetails, scannedItems.First().Item);
+        Assert.AreEqual(1, scannedItems.First().Quantity);
     }
 }

@@ -13,10 +13,6 @@ namespace Implementations.Services
             throw new System.NotImplementedException();
         }
 
-        IEnumerable<Item> IItemService.GetAllItems()
-        {
-            throw new System.NotImplementedException();
-        }
 
         Item IItemService.GetItem(string sku)
         {

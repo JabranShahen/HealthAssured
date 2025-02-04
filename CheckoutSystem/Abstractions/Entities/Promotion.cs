@@ -2,17 +2,10 @@
 {
     public class Promotion
     {
-        public string Name { get; }
-        public string AssociatedItemSKU { get; } 
-        public int Quantity { get; } 
-        public decimal Price { get; }
+        public string Name { get; set; }
+        public string AssociatedItemSKU { get; set; } 
+        public int Quantity { get; set; } 
+        public decimal Price { get; set; }
 
-        public Promotion(string name, string associatedItemSKU, int quantity, decimal price)
-        {
-            Name = name;
-            AssociatedItemSKU = associatedItemSKU;
-            Quantity = quantity;
-            Price = price;
-        }
     }
 }
