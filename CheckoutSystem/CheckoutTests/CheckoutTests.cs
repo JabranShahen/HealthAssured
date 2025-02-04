@@ -102,5 +102,29 @@ namespace Implementations.Tests
             // Assert
             Assert.AreEqual(130, totalPrice);
         }
+
+        [TestMethod]
+        public void GetCheckoutItems_CorrectQuantity()
+        {
+            // Arrange
+            var promotionServiceMock = new Mock<IPromotionService>();
+            var itemServiceMock = new Mock<IItemService>();
+
+            var itemA = new Item { SKU = "A", UnitPrice = 50 };
+
+            itemServiceMock.Setup(s => s.GetItem("A")).Returns(itemA);
+
+            var checkout = new Checkout(promotionServiceMock.Object, itemServiceMock.Object);
+
+            // Act
+            checkout.Scan("A");
+            checkout.Scan("A");
+            var scannedItems = checkout.GetCheckoutItems();
+
+            // Assert
+            Assert.AreEqual(1, scannedItems.Count());
+            Assert.AreEqual(itemA, scannedItems.First().Item);
+            Assert.AreEqual(2, scannedItems.First().Quantity);
+        }
     }
 }
