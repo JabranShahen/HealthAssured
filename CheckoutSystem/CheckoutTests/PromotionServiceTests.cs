@@ -19,9 +19,8 @@ namespace UnitTests.Services
             promotionService.AddPromotion(promotion);
 
             // Assert
-            var retrievedPromotion = promotionService.GetPromotionsForItem("A");
-            CollectionAssert.Contains((System.Collections.ICollection?)retrievedPromotion, promotion);
+            var retrievedPromotions = promotionService.GetPromotionsForItem("A");
+            Assert.IsTrue(retrievedPromotions.Contains(promotion));
         }
-       
     }
 }
