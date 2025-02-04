@@ -34,6 +34,21 @@ namespace Implementations.Tests
         }
 
         [TestMethod]
+        public void CalculateTotalPrice_NoItems()
+        {
+            // Arrange
+            var promotionServiceMock = new Mock<IPromotionService>();
+            var itemServiceMock = new Mock<IItemService>();
+            var checkout = new Checkout(promotionServiceMock.Object, itemServiceMock.Object);
+
+            // Act
+            var totalPrice = checkout.CalculateTotalPrice();
+
+            // Assert
+            Assert.AreEqual(0, totalPrice);
+        }
+
+        [TestMethod]
         public void CalculateTotalPrice_OneAOneB_NoPromotion()
         {
             // Arrange
@@ -58,6 +73,34 @@ namespace Implementations.Tests
 
             // Assert
             Assert.AreEqual(80, totalPrice); // 50 for A + 30 for B = 80
+        }
+
+        [TestMethod]
+        public void CalculateTotalPrice_SingleItem_WithPromotion()
+        {
+            // Arrange
+            var promotionServiceMock = new Mock<IPromotionService>();
+            var itemServiceMock = new Mock<IItemService>();
+
+            // Mock item
+            var itemA = new Item { SKU = "A", UnitPrice = 50 };
+            itemServiceMock.Setup(s => s.GetItem("A")).Returns(itemA);
+
+            // Mock promotion
+            var promotionA = new Promotion { Name = "3 for 130", AssociatedItemSKU = "A", Quantity = 3, Price = 130 };
+            promotionServiceMock.Setup(s => s.GetPromotionsForItem("A")).Returns(new List<Promotion> { promotionA });
+
+            var checkout = new Checkout(promotionServiceMock.Object, itemServiceMock.Object);
+
+            // Act
+            checkout.Scan("A");
+            checkout.Scan("A");
+            checkout.Scan("A");
+
+            var totalPrice = checkout.CalculateTotalPrice();
+
+            // Assert
+            Assert.AreEqual(130, totalPrice);
         }
     }
 }
