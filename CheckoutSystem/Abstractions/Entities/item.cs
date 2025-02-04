@@ -1,4 +1,4 @@
-﻿namespace CheckoutSystem
+﻿namespace CheckoutSystem.Abstractions.Entites
 {
 
     public class Item

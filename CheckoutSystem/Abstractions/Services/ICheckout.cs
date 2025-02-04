@@ -1,7 +1,6 @@
-﻿using System.Collections.Generic;
-using CheckoutSystem;
+﻿using CheckoutSystem.Abstractions.Entites;
 
-namespace CheckoutSystem.Services
+namespace CheckoutSystem.Abstractions.Services
 {
     public interface ICheckout
     {

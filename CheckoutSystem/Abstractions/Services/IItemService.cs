@@ -1,7 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using CheckoutSystem.Abstractions.Entites;
+using System.Collections.Generic;
 
-namespace CheckoutSystem.Services
-{
+namespace CheckoutSystem.Abstractions.Services
+{ 
     public interface IItemService
     {
         void AddItem(Item item);
