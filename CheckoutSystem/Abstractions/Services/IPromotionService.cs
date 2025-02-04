@@ -1,4 +1,4 @@
-﻿using CheckoutSystem.Abstractions.Entites;
+﻿using CheckoutSystem.Abstractions.Entities;
 using System.Collections.Generic;
 
 namespace CheckoutSystem.Abstractions.Services

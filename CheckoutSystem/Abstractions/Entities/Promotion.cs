@@ -1,4 +1,4 @@
-﻿namespace CheckoutSystem.Abstractions.Entites
+﻿namespace CheckoutSystem.Abstractions.Entities
 {
     public class Promotion
     {

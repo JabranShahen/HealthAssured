@@ -1,6 +1,6 @@
 ﻿
 using CheckoutSystem.Abstractions.Services;
-using CheckoutSystem.Abstractions.Entites;
+using CheckoutSystem.Abstractions.Entities;
 using System.Collections.Generic;
 
 namespace Implementations.Services
