@@ -21,7 +21,16 @@ namespace Implementations.Services
         public void Scan(string itemSKU)
         {
             var itemDetails = _itemService.GetItem(itemSKU);
-            _scannedItems.Add(new CheckoutItem { Item = itemDetails, Quantity = 1 });
+            var existingItem = _scannedItems.FirstOrDefault(i => i.Item.SKU == itemSKU);
+
+            if (existingItem != null)
+            {
+                existingItem.Quantity++;
+            }
+            else
+            {
+                _scannedItems.Add(new CheckoutItem { Item = itemDetails, Quantity = 1 });
+            }
         }
 
         public decimal CalculateTotalPrice()
