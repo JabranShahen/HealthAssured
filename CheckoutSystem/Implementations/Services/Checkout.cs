@@ -26,7 +26,7 @@ namespace Implementations.Services
 
         public decimal CalculateTotalPrice()
         {
-            return 0; // Placeholder return value
+            return _scannedItems.Sum(item => item.Item.UnitPrice);
         }
 
         public IEnumerable<CheckoutItem> GetCheckoutItems()
