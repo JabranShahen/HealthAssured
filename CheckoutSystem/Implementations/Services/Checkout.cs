@@ -26,7 +26,35 @@ namespace Implementations.Services
 
         public decimal CalculateTotalPrice()
         {
-            return _scannedItems.Sum(item => item.Item.UnitPrice);
+            decimal totalPrice = 0;
+
+            foreach (var itemGroup in _scannedItems.GroupBy(item => item.Item.SKU))
+            {
+                var item = itemGroup.First().Item;
+                var quantity = itemGroup.Sum(item => item.Quantity);
+
+                // Check if there are any promotions for this item
+                var promotions = _promotionService.GetPromotionsForItem(item.SKU);
+                if (promotions.Any())
+                {
+                    // Apply promotions
+                    foreach (var promotion in promotions)
+                    {
+                        if (quantity >= promotion.Quantity)
+                        {
+                            totalPrice += promotion.Price * (quantity / promotion.Quantity) + item.UnitPrice * (quantity % promotion.Quantity);
+                            break; // Only apply the first matching promotion
+                        }
+                    }
+                }
+                else
+                {
+                    // No promotions, calculate price without discount
+                    totalPrice += item.UnitPrice * quantity;
+                }
+            }
+
+            return totalPrice;
         }
 
         public IEnumerable<CheckoutItem> GetCheckoutItems()
