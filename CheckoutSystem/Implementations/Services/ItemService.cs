@@ -1,22 +1,28 @@
-﻿
-using CheckoutSystem.Abstractions.Services;
+﻿using System.Collections.Generic;
+using System.Linq;
 using CheckoutSystem.Abstractions.Entities;
-using System.Collections.Generic;
+using CheckoutSystem.Abstractions.Services;
 
 namespace Implementations.Services
 {
     public class ItemService : IItemService
     {
+        private readonly List<Item> _items;
 
-        void IItemService.AddItem(Item item)
+        public ItemService()
         {
-            throw new System.NotImplementedException();
+            _items = new List<Item>();
         }
 
-
-        Item IItemService.GetItem(string sku)
+        public void AddItem(Item item)
         {
-            throw new System.NotImplementedException();
+            _items.Add(item);
         }
+
+        public Item GetItem(string sku)
+        {
+            return _items.FirstOrDefault(item => item.SKU == sku);
+        }
+
     }
 }
